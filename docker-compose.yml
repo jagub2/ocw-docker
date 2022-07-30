@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  build-ocw:
+    image: node:15-alpine
+    entrypoint: /bin/sh
+    command: -c "cd /app/front && yarn && yarn build"
+    restart: "no"
+    volumes:
+      - './app:/app'
+  httpsh:
+    build:
+      context: http.sh
+      dockerfile: Dockerfile
+    image: httpsh
+    restart: always
+    depends_on:
+      - build-ocw
+    # ports:
+    #   - '1337:1337'
+    volumes:
+      - './config:/httpsh/config'
+      - './app:/httpsh/app'
+      - './secret:/httpsh/secret'
+      - './storage:/httpsh/storage'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ocw.rule=Host(`ocw.zgr.ovh`)"
+      - "traefik.http.routers.ocw.tls=true"
+      - "traefik.http.services.ocw.loadbalancer.server.port=1337"
+

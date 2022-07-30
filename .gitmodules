@@ -1,0 +1,6 @@
+[submodule "http.sh"]
+	path = http.sh
+	url = https://git.sakamoto.pl/laudom/http.sh
+[submodule "ocw"]
+	path = app
+	url = https://git.sakamoto.pl/laudom/ocw
